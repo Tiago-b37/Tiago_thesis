@@ -1,0 +1,45 @@
+litellm_settings:
+  drop_params: true
+
+router_settings:
+  model_group_alias:
+    "opus plan": "deepseek-v4-flash"
+    "opus": "deepseek-v4-flash"
+    "sonnet": "mimo-v2.5"
+    "haiku": "glm-4.7-flash"
+
+model_list:
+  # Auxiliary model shared by both main-model presets.
+  - model_name: glm-4.7-flash
+    litellm_params:
+      model: anthropic/glm-4.7-flash
+      api_base: https://api.z.ai/api/anthropic
+      api_key: "os.environ/ZAI_AUTH_TOKEN"
+      temperature: 0.1
+      top_p: 0.7
+      max_tokens: 32768
+      drop_params: true
+
+  # DeepSeek Official API (Anthropic-compatible)
+  - model_name: deepseek-v4-flash
+    litellm_params:
+      model: anthropic/deepseek-v4-flash
+      api_base: "https://api.deepseek.com/anthropic"
+      api_key: "os.environ/DEEPSEEK_API_KEY"
+      temperature: 0.1
+      top_p: 0.7
+      max_tokens: 16384
+      reasoning_effort: "none"
+      drop_params: true
+
+  - model_name: mimo-v2.5
+    litellm_params:
+      model: anthropic/mimo-v2.5
+      api_base: "https://token-plan-ams.xiaomimimo.com/anthropic"
+      api_key: "os.environ/XIAOMI_API_KEY"
+      temperature: 0.1
+      top_p: 0.7
+      max_tokens: 32768
+      drop_params: true
+      extra_headers:
+        "x-mimo-reasoning": "false"

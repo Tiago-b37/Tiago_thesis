@@ -1,0 +1,67 @@
+tests:
+  - id: T1_ZERO_TO_HERO
+    name: "Zero-to-Hero Complete Deployment"
+    category: "Construction"
+    difficulty: "High"
+    precondition: "Clean lab (clab destroy && clab deploy)"
+    prompt: >
+      I need you to configure our new data centre fabric from scratch. We have two spines (spine1-dc2 and spine2-dc2) and two leaves (leaf1-dc2 and leaf2-dc2).
+
+      Start with the underlay: configure routed point-to-point links with MTU 9214 and use eBGP as the underlay routing protocol, not OSPF. Use this AS plan: spine1-dc2 AS 65000, spine2-dc2 AS 65000, leaf1-dc2 AS 65101, and leaf2-dc2 AS 65102. Advertise the loopbacks into underlay BGP: spine1-dc2 is 1.1.1.1/32, spine2-dc2 is 1.1.1.2/32, leaf1-dc2 is 1.1.1.11/32, and leaf2-dc2 is 1.1.1.12/32. The P2P links are spine1-leaf1 on 10.0.11.0/31, spine1-leaf2 on 10.0.12.0/31, spine2-leaf1 on 10.0.21.0/31, and spine2-leaf2 on 10.0.22.0/31.
+
+      Once the underlay is up, configure the BGP EVPN overlay directly between the two leaf VTEPs over their loopbacks using the same per-device AS plan. The spines should only provide underlay reachability. leaf1-dc2 and leaf2-dc2 should peer with each other using Loopback0 as update-source, eBGP multihop, and send-community extended. Activate the EVPN address family on the leaf-to-leaf overlay session.
+
+      For the data plane, use VXLAN with head-end replication, without multicast. Each leaf is a VTEP sourced from its loopback.
+
+      Finally, configure a test tenant: VLAN 10 mapped to VNI 10010 on both leaves, with an SVI using anycast gateway 10.10.10.1/24 and MAC 00:1c:73:00:00:01. client8-dc2 connects to leaf1-dc2 and should use 10.10.10.10/24. client9-dc2 connects to leaf2-dc2 and should use 10.10.10.20/24.
+    user_interventions:
+      - "STOP & ASK for validation -> respond 'yes'"
+
+  - id: T2_VLAN_MIGRATION
+    name: "Day-N VLAN Migration"
+    category: "Modification"
+    difficulty: "Medium"
+    precondition: "Baseline fabric operational (via prepare_baseline.sh or T1)"
+    prompt: >
+      Migrate the existing test tenant from VLAN 10/VNI 10010 to VLAN 20/VNI 10020.
+
+      The existing fabric uses this AS plan: spine1-dc2/spine2-dc2 AS 65000, leaf1-dc2 AS 65101, and leaf2-dc2 AS 65102. Preserve the device local AS during cleanup and configuration. Use the shared EVPN route-target namespace 65000:VNI, so the new tenant route-target should be 65000:10020.
+
+      The new anycast gateway must be 10.20.20.1/24 with MAC 00:1c:73:00:00:01.
+
+      client8-dc2 should become 10.20.20.10/24 and client9-dc2 should become 10.20.20.20/24.
+
+      Keep leaf1-dc2 and leaf2-dc2 as VTEPs and use VXLAN head-end replication.
+
+      At the end of the migration, the old VLAN 10/VNI 10010 tenant state should no longer remain active on the leaves.
+    user_interventions:
+      - "STOP & ASK for validation -> respond 'yes'"
+
+  - id: T3_OVERLAPPING_TENANTS
+    name: "Day-N Overlapping Tenant Isolation (VRF + Symmetric IRB)"
+    category: "Security/Multi-Tenancy"
+    difficulty: "High"
+    precondition: "Baseline fabric operational (via prepare_baseline.sh or T1)"
+    prompt: >
+      We need to add a second tenant to our existing fabric while keeping the first tenant fully operational.
+
+      Current state: Tenant BLUE is already configured on VLAN 10 / VNI 10010 with anycast gateway 10.10.10.1/24 and MAC 00:1c:73:00:00:01. client8-dc2 (10.10.10.10/24) is on leaf1-dc2 and client9-dc2 (10.10.10.20/24) is on leaf2-dc2.
+
+      Existing AS plan: spine1-dc2/spine2-dc2 AS 65000, leaf1-dc2 AS 65101, and leaf2-dc2 AS 65102. Preserve each device local AS and use the shared EVPN route-target namespace 65000:VNI.
+
+      Your task: Create a second tenant called RED on VLAN 20 / VNI 10020 using the SAME IP range 10.10.10.0/24 with the SAME anycast gateway 10.10.10.1/24 and MAC 00:1c:73:00:00:01. Use VRF-based isolation with Symmetric IRB (L3VNI) so that BLUE and RED traffic is completely separated.
+
+      Assign VRF BLUE (L3VNI 50010) to the existing VLAN 10 tenant and VRF RED (L3VNI 50020) to the new VLAN 20 tenant. Configure BGP EVPN with proper RD/RT for each VRF on both leaves.
+
+      client10-dc2 connects to leaf1-dc2 Ethernet4 in VLAN 20 and should use 10.10.10.30/24. client11-dc2 connects to leaf2-dc2 Ethernet4 in VLAN 20 and should use 10.10.10.40/24.
+    user_interventions:
+      - "STOP & ASK for validation -> respond 'yes'"
+
+  - id: T4_TROUBLESHOOTING
+    name: "Read-Only Troubleshooting"
+    category: "Investigation"
+    difficulty: "Medium"
+    precondition: "Baseline fabric operational AND fault injected (eBGP underlay remote-AS mismatch on leaf1-dc2 toward spine1-dc2)"
+    prompt: >
+      The fabric was previously healthy, but one underlay BGP adjacency is now suspected to be down. Investigate the fabric control plane and report the root cause. This is a read-only investigation - do not make any configuration changes.
+    user_interventions: []

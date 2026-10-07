@@ -1,0 +1,19 @@
+---
+username: admin
+password: admin
+port: 22
+platform: eos
+
+connection_options:
+  napalm:
+    extras:
+      optional_args:
+        transport: ssh
+        port: 22
+  netmiko:
+    extras:
+      conn_timeout: 60
+  paramiko:
+    extras:
+      look_for_keys: false
+      allow_agent: false

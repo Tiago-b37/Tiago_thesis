@@ -1,0 +1,1 @@
+The fabric was previously healthy, but one underlay BGP adjacency is now suspected to be down. Investigate the fabric control plane and report the root cause. This is a read-only investigation - do not make any configuration changes.

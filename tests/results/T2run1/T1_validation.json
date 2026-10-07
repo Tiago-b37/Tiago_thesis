@@ -1,0 +1,10 @@
+{
+  "bgp_underlay_established": true,
+  "evpn_established": true,
+  "dataplane_ready": false,
+  "client8_to_client9": false,
+  "client9_to_client8": false,
+  "client8_to_gateway": false,
+  "client9_to_gateway": false,
+  "pings_ok": false
+}

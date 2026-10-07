@@ -1,0 +1,210 @@
+{
+    "arista_eos_commands": {
+        "underlay": [
+            {
+                "command": "show version",
+                "description": "System hardware, EOS software version, uptime, and model information.",
+                "usage_example": "show version",
+                "json_support": true
+            },
+            {
+                "command": "show running-config",
+                "description": "Full active configuration. Use 'show running-config section <keyword>' to filter output.",
+                "usage_example": "show running-config section router bgp",
+                "json_support": false
+            },
+            {
+                "command": "show interfaces status",
+                "description": "Quick overview of all interfaces: speed, duplex, VLAN, type, and link status.",
+                "usage_example": "show interfaces status",
+                "json_support": true
+            },
+            {
+                "command": "show ip interface brief",
+                "description": "One-line summary of each interface's IP address and operational state.",
+                "usage_example": "show ip interface brief",
+                "json_support": true
+            },
+            {
+                "command": "show ip route",
+                "description": "IP routing table. Use 'show ip route vrf <name>' for VRF-specific routes.",
+                "usage_example": "show ip route vrf TENANT-A",
+                "json_support": true
+            },
+            {
+                "command": "show ip arp",
+                "description": "ARP table mapping Layer 3 IP to Layer 2 MAC addresses.",
+                "usage_example": "show ip arp vrf TENANT-A",
+                "json_support": true
+            },
+            {
+                "command": "show lldp neighbors",
+                "description": "Directly connected devices discovered via LLDP (Arista does not use CDP by default).",
+                "usage_example": "show lldp neighbors detail",
+                "json_support": true
+            },
+            {
+                "command": "show mac address-table",
+                "description": "Layer 2 MAC address forwarding table. Filter by VLAN or interface.",
+                "usage_example": "show mac address-table vlan 10",
+                "json_support": true
+            },
+            {
+                "command": "show logging last 50",
+                "description": "Recent syslog messages for error tracking, interface flaps, and events.",
+                "usage_example": "show logging last 50",
+                "json_support": false
+            },
+            {
+                "command": "show ip ospf neighbor",
+                "description": "OSPF neighbor adjacencies with state (Full/2-Way), priority, and dead time. Use if underlay runs OSPF instead of BGP.",
+                "usage_example": "show ip ospf neighbor",
+                "json_support": true
+            }
+        ],
+        "bgp": [
+            {
+                "command": "show ip bgp summary",
+                "description": "BGP underlay session summary: neighbor state, AS, prefixes received.",
+                "usage_example": "show ip bgp summary",
+                "json_support": true
+            },
+            {
+                "command": "show ip bgp neighbors",
+                "description": "Detailed BGP neighbor information including timers, capabilities, and address families. For BGP unnumbered, use the interface name instead of IP.",
+                "usage_example": "show ip bgp neighbors 10.0.0.1",
+                "json_support": true
+            },
+            {
+                "command": "show ip bgp neighbors <interface>",
+                "description": "BGP unnumbered: show BGP session over a specific interface when using unnumbered links (no IPs on point-to-point).",
+                "usage_example": "show ip bgp neighbors Ethernet1",
+                "json_support": true
+            },
+            {
+                "command": "show bgp evpn summary",
+                "description": "EVPN overlay BGP session summary. Shows Established state for EVPN peers.",
+                "usage_example": "show bgp evpn summary",
+                "json_support": true
+            },
+            {
+                "command": "show bgp evpn",
+                "description": "Full EVPN route table including Type 2 (MAC/IP), Type 3 (IMET), and Type 5 (IP Prefix).",
+                "usage_example": "show bgp evpn route-type mac-ip",
+                "json_support": true
+            },
+            {
+                "command": "show bgp evpn route-type imet",
+                "description": "EVPN Type 3 Inclusive Multicast Ethernet Tag routes for BUM traffic replication.",
+                "usage_example": "show bgp evpn route-type imet",
+                "json_support": true
+            }
+        ],
+        "vxlan_evpn": [
+            {
+                "command": "show interfaces vxlan 1",
+                "description": "VTEP interface status: source IP, UDP port, configured VNIs, and operational state.",
+                "usage_example": "show interfaces vxlan 1",
+                "json_support": true
+            },
+            {
+                "command": "show vxlan vtep",
+                "description": "Remote VTEPs discovered via EVPN. Shows flood list and reachability.",
+                "usage_example": "show vxlan vtep",
+                "json_support": true
+            },
+            {
+                "command": "show vxlan vni",
+                "description": "VNI to VLAN/VRF mapping table with L2/L3 type indicators.",
+                "usage_example": "show vxlan vni",
+                "json_support": true
+            },
+            {
+                "command": "show vxlan address-table",
+                "description": "MAC addresses learned via VXLAN and their associated remote VTEP IP.",
+                "usage_example": "show vxlan address-table",
+                "json_support": true
+            },
+            {
+                "command": "show vxlan flood vtep",
+                "description": "VTEP flood list per VNI, showing which VTEPs receive BUM traffic.",
+                "usage_example": "show vxlan flood vtep",
+                "json_support": true
+            }
+        ],
+        "vrf": [
+            {
+                "command": "show vrf",
+                "description": "All configured VRFs with their Route Distinguisher, interfaces, and protocols.",
+                "usage_example": "show vrf",
+                "json_support": true
+            },
+            {
+                "command": "show ip route vrf all",
+                "description": "Routing tables for all VRFs simultaneously.",
+                "usage_example": "show ip route vrf all",
+                "json_support": true
+            }
+        ],
+        "vlan_svi": [
+            {
+                "command": "show vlan",
+                "description": "All VLANs, their names, status (active/suspend), and assigned interfaces.",
+                "usage_example": "show vlan brief",
+                "json_support": true
+            },
+            {
+                "command": "show ip virtual-router",
+                "description": "Anycast gateway (ip address virtual) status on SVIs for distributed gateway. Use 'vrf' option for tenant-specific view.",
+                "usage_example": "show ip virtual-router vrf TENANT-A",
+                "json_support": true
+            }
+        ],
+        "mlag": [
+            {
+                "command": "show mlag",
+                "description": "MLAG domain status: state, peer-link, config-sanity, and peer reachability.",
+                "usage_example": "show mlag",
+                "json_support": true
+            },
+            {
+                "command": "show mlag interfaces",
+                "description": "Per-interface MLAG status showing active/disabled state and consistency.",
+                "usage_example": "show mlag interfaces",
+                "json_support": true
+            },
+            {
+                "command": "show port-channel dense",
+                "description": "Port-channel (LAG) membership summary with member link status.",
+                "usage_example": "show port-channel dense",
+                "json_support": true
+            }
+        ],
+        "troubleshooting": [
+            {
+                "command": "ping",
+                "description": "ICMP connectivity test. Use 'ping vrf <name>' for VRF-aware testing.",
+                "usage_example": "ping vrf TENANT-A 10.1.10.100 source 10.1.10.1",
+                "json_support": false
+            },
+            {
+                "command": "traceroute",
+                "description": "Layer 3 path trace. Use 'traceroute vrf <name>' for VRF-aware tracing.",
+                "usage_example": "traceroute vrf TENANT-A 10.1.20.100",
+                "json_support": false
+            },
+            {
+                "command": "show interface counters errors",
+                "description": "Interface error counters: CRC, runts, giants, input/output errors.",
+                "usage_example": "show interface counters errors",
+                "json_support": true
+            },
+            {
+                "command": "show reload cause",
+                "description": "Last device reload reason. Useful for detecting unexpected reboots.",
+                "usage_example": "show reload cause",
+                "json_support": true
+            }
+        ]
+    }
+}

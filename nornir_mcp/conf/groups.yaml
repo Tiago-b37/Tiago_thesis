@@ -1,0 +1,67 @@
+---
+routers:
+  platform: eos
+  data:
+    fabric_role: router
+  connection_options:
+    napalm:
+      platform: eos
+      username: admin
+      password: admin
+      extras:
+        optional_args:
+          transport: ssh
+          port: 22
+
+spines:
+  platform: eos
+  data:
+    fabric_role: spine
+  connection_options:
+    napalm:
+      platform: eos
+      username: admin
+      password: admin
+      extras:
+        optional_args:
+          transport: ssh
+          port: 22
+
+leafs:
+  platform: eos
+  data:
+    fabric_role: leaf
+  connection_options:
+    napalm:
+      platform: eos
+      username: admin
+      password: admin
+      extras:
+        optional_args:
+          transport: ssh
+          port: 22
+
+gateways:
+  platform: eos
+  data:
+    fabric_role: gateway
+  connection_options:
+    napalm:
+      platform: eos
+      username: admin
+      password: admin
+      extras:
+        optional_args:
+          transport: ssh
+          port: 22
+
+clients:
+  platform: linux
+  connection_options:
+    paramiko:
+      extras:
+        look_for_keys: false
+        allow_agent: false
+
+linux:
+  platform: linux

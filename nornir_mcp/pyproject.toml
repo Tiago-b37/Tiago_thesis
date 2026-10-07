@@ -1,0 +1,43 @@
+[project]
+name = "nornir-mcp"
+version = "0.2.0"
+description = "Nornir MCP server for network automation"
+readme = { text = "Nornir MCP automation backend for the EVPN/VXLAN lab. See the repository README for setup and usage.", content-type = "text/plain" }
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "yhvh.chen" }
+]
+dependencies = [
+    "nornir==3.5.0",
+    "nornir-napalm",
+    "mcp[cli]==1.15.0",
+    "sse-starlette",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "isort",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+only-include = [
+    "server_stdio.py",
+    "nornir_ops.py",
+    "validation_models.py",
+    "prompts.py",
+    "resources.py",
+    "resources",
+]
+
+[tool.hatch.build.targets.sdist]
+exclude = ["/run.py", "/server.py"]
+
+[tool.hatch.metadata]
+allow-direct-references = true

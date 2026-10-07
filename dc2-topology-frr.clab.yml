@@ -1,0 +1,73 @@
+name: dc2-topology
+
+mgmt:
+  network: clab-mgmt
+  ipv4-subnet: 172.20.0.0/24
+
+topology:
+  defaults:
+    image-pull-policy: Never
+  kinds:
+    arista_ceos:
+      image: ceos:4.34.3.1M
+      env:
+        CLAB_MGMT_VRF: MGMT
+
+  nodes:
+    spine1-dc2:
+      kind: arista_ceos
+      group: spine
+      mgmt-ipv4: 172.20.0.2
+      startup-config: configs/spine1-dc2.cfg
+
+    spine2-dc2:
+      kind: arista_ceos
+      group: spine
+      mgmt-ipv4: 172.20.0.3
+      startup-config: configs/spine2-dc2.cfg
+
+    leaf1-dc2:
+      kind: arista_ceos
+      group: leaf
+      mgmt-ipv4: 172.20.0.11
+      startup-config: configs/leaf1-dc2.cfg
+
+    leaf2-dc2:
+      kind: arista_ceos
+      group: leaf
+      mgmt-ipv4: 172.20.0.12
+      startup-config: configs/leaf2-dc2.cfg
+
+    client8-dc2:
+      kind: linux
+      group: client
+      image: alpine:latest
+      mgmt-ipv4: 172.20.0.101
+
+    client9-dc2:
+      kind: linux
+      group: client
+      image: alpine:latest
+      mgmt-ipv4: 172.20.0.102
+
+    client10-dc2:
+      kind: linux
+      group: client
+      image: alpine:latest
+      mgmt-ipv4: 172.20.0.103
+
+    client11-dc2:
+      kind: linux
+      group: client
+      image: alpine:latest
+      mgmt-ipv4: 172.20.0.104
+
+  links:
+    - endpoints: ["spine1-dc2:eth1", "leaf1-dc2:eth1"]
+    - endpoints: ["spine1-dc2:eth2", "leaf2-dc2:eth1"]
+    - endpoints: ["spine2-dc2:eth1", "leaf1-dc2:eth2"]
+    - endpoints: ["spine2-dc2:eth2", "leaf2-dc2:eth2"]
+    - endpoints: ["leaf1-dc2:eth3", "client8-dc2:eth1"]
+    - endpoints: ["leaf2-dc2:eth3", "client9-dc2:eth1"]
+    - endpoints: ["leaf1-dc2:eth4", "client10-dc2:eth1"]
+    - endpoints: ["leaf2-dc2:eth4", "client11-dc2:eth1"]

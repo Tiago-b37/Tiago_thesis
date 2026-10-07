@@ -1,0 +1,6 @@
+We need to add a second tenant to our existing fabric while keeping the first tenant fully operational.
+Current state: Tenant BLUE is already configured on VLAN 10 / VNI 10010 with anycast gateway 10.10.10.1/24 and MAC 00:1c:73:00:00:01. client8-dc2 (10.10.10.10/24) is on leaf1-dc2 and client9-dc2 (10.10.10.20/24) is on leaf2-dc2.
+Existing AS plan: spine1-dc2/spine2-dc2 AS 65000, leaf1-dc2 AS 65101, and leaf2-dc2 AS 65102. Preserve each device local AS and use the shared EVPN route-target namespace 65000:VNI.
+Your task: Create a second tenant called RED on VLAN 20 / VNI 10020 using the SAME IP range 10.10.10.0/24 with the SAME anycast gateway 10.10.10.1/24 and MAC 00:1c:73:00:00:01. Use VRF-based isolation with Symmetric IRB (L3VNI) so that BLUE and RED traffic is completely separated.
+Assign VRF BLUE (L3VNI 50010) to the existing VLAN 10 tenant and VRF RED (L3VNI 50020) to the new VLAN 20 tenant. Configure BGP EVPN with proper RD/RT for each VRF on both leaves.
+client10-dc2 connects to leaf1-dc2 Ethernet4 in VLAN 20 and should use 10.10.10.30/24. client11-dc2 connects to leaf2-dc2 Ethernet4 in VLAN 20 and should use 10.10.10.40/24.

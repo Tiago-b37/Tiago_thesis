@@ -1,0 +1,16 @@
+{
+  "blue_c8_to_c9": true,
+  "blue_c9_to_c8": true,
+  "red_c10_to_c11": true,
+  "red_c11_to_c10": true,
+  "blue_c8_to_gateway": true,
+  "red_c10_to_gateway": true,
+  "blue_to_red_blocked": true,
+  "red_to_blue_blocked": true,
+  "blue_intra_tenant_ok": true,
+  "red_intra_tenant_ok": true,
+  "overlapping_gateway_ok": true,
+  "cross_tenant_blocked": true,
+  "symmetric_irb_ready": true,
+  "policy_compliance": true
+}

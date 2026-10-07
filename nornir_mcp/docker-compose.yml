@@ -1,0 +1,19 @@
+services:
+  nornir-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nornir-mcp-server
+    user: "0:0"
+    environment:
+      - NORNIR_MCP_LOG=nornir.log
+    volumes:
+      - ./conf:/app/conf:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import sys; sys.exit(0)\""]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    # Claude Code starts the stdio server through docker exec.
+    command: ["sleep", "infinity"]

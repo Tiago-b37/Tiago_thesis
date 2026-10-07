@@ -1,0 +1,6 @@
+Migrate the existing test tenant from VLAN 10/VNI 10010 to VLAN 20/VNI 10020.
+The existing fabric uses this AS plan: spine1-dc2/spine2-dc2 AS 65000, leaf1-dc2 AS 65101, and leaf2-dc2 AS 65102. Preserve the device local AS during cleanup and configuration. Use the shared EVPN route-target namespace 65000:VNI, so the new tenant route-target should be 65000:10020.
+The new anycast gateway must be 10.20.20.1/24 with MAC 00:1c:73:00:00:01.
+client8-dc2 should become 10.20.20.10/24 and client9-dc2 should become 10.20.20.20/24.
+Keep leaf1-dc2 and leaf2-dc2 as VTEPs and use VXLAN head-end replication.
+At the end of the migration, the old VLAN 10/VNI 10010 tenant state should no longer remain active on the leaves.

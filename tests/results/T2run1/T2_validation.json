@@ -1,0 +1,12 @@
+{
+  "vlan20_ready": true,
+  "client8_to_client9": true,
+  "client9_to_client8": true,
+  "client8_to_gateway": true,
+  "client9_to_gateway": true,
+  "old_vni_removed": true,
+  "old_vlan_removed": true,
+  "old_tenant_removed": true,
+  "pings_ok": true,
+  "migration_complete": true
+}

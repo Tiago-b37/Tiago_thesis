@@ -1,0 +1,29 @@
+---
+exact_commands:
+  - reload
+  - erase startup-config
+  - write erase
+  - write memory
+  - copy running-config startup-config
+  - configure terminal
+  - conf t
+  - delete flash:
+  - format flash:
+
+keywords:
+  - configure
+  - "conf t"
+  - erase
+  - format
+  - delete
+  - reload
+  - "write memory"
+  - "no "
+  - "copy running-config startup-config"
+  - wr
+
+disallowed_patterns:
+  - ">"
+  - "<"
+  - ";"
+  - "&&"

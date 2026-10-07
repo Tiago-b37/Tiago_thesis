@@ -1,0 +1,171 @@
+{
+  "topology": {
+    "lab_name": "dc2-topology",
+    "platform": "containerlab",
+    "image": "ceos:4.34.3.1M",
+    "mgmt_subnet": "172.20.0.0/24",
+    "nodes": [
+      {
+        "id": "spine1-dc2",
+        "type": "spine",
+        "platform": "arista_ceos",
+        "group": "spine",
+        "mgmt_ip": "172.20.0.2",
+        "role": "Spine switch; eBGP underlay transit node for leaf reachability"
+      },
+      {
+        "id": "spine2-dc2",
+        "type": "spine",
+        "platform": "arista_ceos",
+        "group": "spine",
+        "mgmt_ip": "172.20.0.3",
+        "role": "Spine switch; eBGP underlay transit node for leaf reachability"
+      },
+      {
+        "id": "leaf1-dc2",
+        "type": "leaf",
+        "platform": "arista_ceos",
+        "group": "leaf",
+        "mgmt_ip": "172.20.0.11",
+        "role": "Leaf switch and VTEP serving client8-dc2 and client10-dc2"
+      },
+      {
+        "id": "leaf2-dc2",
+        "type": "leaf",
+        "platform": "arista_ceos",
+        "group": "leaf",
+        "mgmt_ip": "172.20.0.12",
+        "role": "Leaf switch and VTEP serving client9-dc2 and client11-dc2"
+      },
+      {
+        "id": "client8-dc2",
+        "type": "client",
+        "platform": "linux",
+        "group": "client",
+        "mgmt_ip": "172.20.0.101",
+        "role": "Linux client connected to leaf1-dc2 Ethernet3"
+      },
+      {
+        "id": "client9-dc2",
+        "type": "client",
+        "platform": "linux",
+        "group": "client",
+        "mgmt_ip": "172.20.0.102",
+        "role": "Linux client connected to leaf2-dc2 Ethernet3"
+      },
+      {
+        "id": "client10-dc2",
+        "type": "client",
+        "platform": "linux",
+        "group": "client",
+        "mgmt_ip": "172.20.0.103",
+        "role": "Linux client connected to leaf1-dc2 Ethernet4"
+      },
+      {
+        "id": "client11-dc2",
+        "type": "client",
+        "platform": "linux",
+        "group": "client",
+        "mgmt_ip": "172.20.0.104",
+        "role": "Linux client connected to leaf2-dc2 Ethernet4"
+      }
+    ],
+    "links": [
+      {
+        "source": "spine1-dc2",
+        "source_interface": "eth1",
+        "target": "leaf1-dc2",
+        "target_interface": "eth1",
+        "layer": "underlay",
+        "subnet": "10.0.11.0/31",
+        "description": "Spine1 to Leaf1 underlay link"
+      },
+      {
+        "source": "spine1-dc2",
+        "source_interface": "eth2",
+        "target": "leaf2-dc2",
+        "target_interface": "eth1",
+        "layer": "underlay",
+        "subnet": "10.0.12.0/31",
+        "description": "Spine1 to Leaf2 underlay link"
+      },
+      {
+        "source": "spine2-dc2",
+        "source_interface": "eth1",
+        "target": "leaf1-dc2",
+        "target_interface": "eth2",
+        "layer": "underlay",
+        "subnet": "10.0.21.0/31",
+        "description": "Spine2 to Leaf1 underlay link"
+      },
+      {
+        "source": "spine2-dc2",
+        "source_interface": "eth2",
+        "target": "leaf2-dc2",
+        "target_interface": "eth2",
+        "layer": "underlay",
+        "subnet": "10.0.22.0/31",
+        "description": "Spine2 to Leaf2 underlay link"
+      },
+      {
+        "source": "leaf1-dc2",
+        "source_interface": "eth3",
+        "target": "client8-dc2",
+        "target_interface": "eth1",
+        "layer": "access",
+        "description": "BLUE tenant access port on leaf1"
+      },
+      {
+        "source": "leaf2-dc2",
+        "source_interface": "eth3",
+        "target": "client9-dc2",
+        "target_interface": "eth1",
+        "layer": "access",
+        "description": "BLUE tenant access port on leaf2"
+      },
+      {
+        "source": "leaf1-dc2",
+        "source_interface": "eth4",
+        "target": "client10-dc2",
+        "target_interface": "eth1",
+        "layer": "access",
+        "description": "RED tenant access port on leaf1"
+      },
+      {
+        "source": "leaf2-dc2",
+        "source_interface": "eth4",
+        "target": "client11-dc2",
+        "target_interface": "eth1",
+        "layer": "access",
+        "description": "RED tenant access port on leaf2"
+      }
+    ],
+    "summary": {
+      "arista_nodes": [
+        "spine1-dc2",
+        "spine2-dc2",
+        "leaf1-dc2",
+        "leaf2-dc2"
+      ],
+      "linux_clients": [
+        "client8-dc2",
+        "client9-dc2",
+        "client10-dc2",
+        "client11-dc2"
+      ],
+      "vtep_nodes": [
+        "leaf1-dc2",
+        "leaf2-dc2"
+      ],
+      "evpn_overlay_nodes": [
+        "leaf1-dc2",
+        "leaf2-dc2"
+      ],
+      "underlay_transit_nodes": [
+        "spine1-dc2",
+        "spine2-dc2"
+      ],
+      "route_reflectors": []
+    }
+  }
+}
